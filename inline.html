@@ -1,0 +1,168 @@
+<div class="wrapper">
+    <div class="form-wrapper">
+        <img src = "logo.png" alt = "flutterwave_logo" height = "100px" width = "100px" />
+        <form id = "form">
+            <script src="https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
+            <input class="form-control" type="email" id="email" placeholder="Email Address">
+            <input class="form-control" type="text" id="amount" placeholder="Amount">
+            <input class="form-control" type="text" id="phone_number" placeholder="Phone number">
+            <input class="form-control" type="text" id="currency" placeholder="Currency">
+            <div class="submit-group">
+              <button type="button" class="button2" onClick="payWithRave()">Pay Now</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const API_publicKey = "FLWPUBK_TEST-f979e2e755dd20c71cad2b96f35fbea1-X";
+    function payWithRave() {
+        let email  = document.getElementById('form').elements['email'].value;
+        let amount = document.getElementById('form').elements['amount'].value;
+        let phone = document.getElementById('form').elements['phone_number'].value;
+        let currency = document.getElementById('form').elements['currency'].value;
+        var x = getpaidSetup({
+            PBFPubKey: API_publicKey,
+            customer_email: email,
+            amount: amount,
+            customer_phone: phone,
+            currency: currency,
+            txref: "rave-507",
+            onclose: function() {},
+            callback: function(response) {
+                var txref = response.tx.txRef; 
+                console.log("This is the response returned after a charge", response);
+                if (
+                    response.tx.chargeResponseCode == "00" ||
+                    response.tx.chargeResponseCode == "0" 
+                ) {
+                    // redirect to a success page
+                    window.open("https://www.google.com")
+                } else {
+                    // redirect to a failure page.
+                    window.open("https://www.w3schools.com")
+                }
+                x.close(); // use this to close the modal immediately after payment.
+            }
+        });
+    }
+</script>
+
+<style>
+/* Colors */
+/*
+dark blue: #476A6F
+light blue: #258EA6
+dark green: #519E8A
+medium green: #7EB09B
+light green: #A3C4BC
+*/
+
+input[type=text] {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+input[type=email] {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.form-control{
+  border:0;
+  margin-top: 24px;
+  padding: 12px 20px;
+  border: 1px solid #efefef;
+  border-radius: 2px;
+  width: 100%;
+}
+
+.form-control:hover,
+.form-control:active,
+.form-control:focus{
+  box-shadow: none;
+  border: 2px solid #fdc106;
+}
+
+.form-control.error {
+  border: 2px solid red;
+}
+
+.wrapper {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #efefef;
+}
+
+.form-wrapper {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  padding: 100px 50px;
+  border-radius: 0px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, .2);
+  background-color: #ffffff;
+}
+
+.form-wrapper img{
+  border: none;
+  display: block;
+  margin: 0 auto;
+  border-radius: 100px;
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.form-group-1{
+  margin-top: 20px;
+}
+
+.submit-group{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.submit-group button {
+  background-color: #12122e;
+  color: #fdc106;
+  border: 2px solid #12122e;
+  border-radius: 0px;
+  width: 100%;
+  margin-top: 2.5em;
+  padding: 8px 0px;
+  font-size: .75em;
+  font-weight: lighter;
+  letter-spacing: 1px;
+  margin-bottom: 0.25em;
+}
+
+.submit-group button:hover {
+  color: #fff;
+  background-color: #fdc106;
+  border: 2px solid #fdc106;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 0.75em;
+  margin-top:10px;
+  display: relative;
+}
+
+.successMessage {
+  color: green;
+  font-size: 0.75em;
+  margin-top: 10px;
+  display: relative;
+}    
+ </style>
